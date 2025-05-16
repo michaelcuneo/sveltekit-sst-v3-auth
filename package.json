@@ -1,15 +1,18 @@
 {
-  "name": "monorepo-template",
+  "name": "sveltekit-sst-v3-auth",
   "version": "0.0.0",
   "workspaces": [
     "packages/*"
   ],
   "scripts": {},
   "devDependencies": {
+    "@openauthjs/openauth": "^0.4.3",
     "@tsconfig/node22": "^22",
-    "typescript": "^5"
+    "hono": "^4.7.9",
+    "typescript": "^5",
+    "valibot": "^1.1.0"
   },
   "dependencies": {
-    "sst": "^3"
+    "sst": "3.14.24"
   }
 }

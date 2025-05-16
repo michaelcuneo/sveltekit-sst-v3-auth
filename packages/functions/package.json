@@ -1,10 +1,10 @@
 {
-  "name": "@monorepo-template/functions",
+  "name": "@sveltekit-sst-v3-auth/functions",
   "version": "0.0.0",
   "type": "module",
   "dependencies": {
-    "@monorepo-template/core": "*",
-    "sst": "*"
+    "@sveltekit-sst-v3-auth/core": "*",
+    "sst": "3.14.24"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8"

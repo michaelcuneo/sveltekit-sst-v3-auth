@@ -3,7 +3,7 @@
 export default $config({
   app(input) {
     return {
-      name: "monorepo-template",
+      name: "sveltekit-sst-v3-auth",
       removal: input?.stage === "production" ? "retain" : "remove",
       protect: ["production"].includes(input?.stage),
       home: "aws",
@@ -11,10 +11,13 @@ export default $config({
   },
   async run() {
     const storage = await import("./infra/storage");
-    await import("./infra/api");
+    import("./infra/api");
+    const MyWebsite = await import("./infra/website");
+    const auth = await import("./infra/auth");
 
     return {
       MyBucket: storage.bucket.name,
+      MyWebsite: MyWebsite.website.url,
     };
   },
 });

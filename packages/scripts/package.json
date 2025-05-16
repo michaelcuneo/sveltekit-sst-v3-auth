@@ -1,10 +1,10 @@
 {
-  "name": "@monorepo-template/scripts",
+  "name": "@sveltekit-sst-v3-auth/scripts",
   "version": "0.0.0",
   "type": "module",
   "dependencies": {
-    "@monorepo-template/core": "*",
-    "sst": "*"
+    "@sveltekit-sst-v3-auth/core": "*",
+    "sst": "3.14.24"
   },
   "scripts": {
     "shell": "sst shell tsx"
