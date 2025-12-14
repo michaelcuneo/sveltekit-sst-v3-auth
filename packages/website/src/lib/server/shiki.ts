@@ -1,15 +1,10 @@
-import { getHighlighter } from 'shiki';
+import { createHighlighter } from 'shiki';
 
 export type exportType = { default: string };
 
-/**
- * Asynchronously computes code snippets with highlighted code using Shiki.
- *
- * @returns {Promise<Record<string, string>>} A Promise that resolves to a Record, where the keys are file names and the values are the highlighted code.
- */
-export async function computeCodeSnippets() {
+export const computeCodeSnippets = async () => {
 	// Initialize Shiki highlighter with 'dark-plus' theme and supported languages
-	const highlighter = await getHighlighter({
+	const highlighter = await createHighlighter({
 		themes: ['dark-plus'],
 		langs: ['html', 'js', 'css', 'svelte', 'sh']
 	});
@@ -34,4 +29,4 @@ export async function computeCodeSnippets() {
 
 	// Return the computed code snippets as a Record, where the keys are file names and the values are the highlighted code
 	return Object.fromEntries(codeSnippetsWithHighlightedCode);
-}
+};

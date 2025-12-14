@@ -5,5 +5,4 @@ type User = {
 
 type Session = {
   id: string;
-  userId: string;
 };

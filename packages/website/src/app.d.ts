@@ -3,12 +3,18 @@
 declare global {
 	namespace App {
 		interface Error {
-			code: number,
-			message: string,
+			code?: string;
+			errorId?: string;
 		}
 		interface Locals {
-			session: Session | undefined;
 			user: User | undefined;
+			session: Session | undefined;
+			startTimer: number;
+			error: string | undefined;
+			errorId: string | undefined;
+			errorStackTrace: string | undefined;
+			message: unknown;
+			track: unknown;
 		}
 		// interface PageData {}
 		// interface PageState {}

@@ -1,31 +1,58 @@
-import { validateSession } from '$lib/utils/auth';
-import { SESSION_COOKIE_NAME } from '$lib/utils/constants';
-import type { Handle } from '@sveltejs/kit';
+import { redirect, type Handle, type HandleServerError } from "@sveltejs/kit";
+import { createAuthClient, setTokens } from "$lib/auth/auth.server";
+import { subjects } from "$lib/auth/subjects";
+import log from "$lib/server/log";
+
+export const handleError: HandleServerError = async ({ error, event }) => {
+  const errorId = crypto.randomUUID();
+
+  event.locals.error = error?.toString() || undefined;
+  event.locals.errorStackTrace = (error instanceof Error ? error.stack : undefined);
+  event.locals.errorId = errorId;
+
+  log(500, event);
+
+  return {
+    message: "An unexpected error occurred",
+    errorId,
+  };
+};
 
 export const handle: Handle = async ({ event, resolve }) => {
-  // Retrieve the session cookie from the request cookies
-  const sessionCookie = event.cookies.get(SESSION_COOKIE_NAME);
+  // Set the start timer for logging
+  const startTimer = Date.now();
+  event.locals.startTimer = startTimer;
 
-  // Initialize the user session with empty id and userId
-  let userSession = undefined;
-
-  // If a session cookie is present, validate the session and update the user session
-  if (sessionCookie) {
-    try {
-      const { session } = validateSession(sessionCookie);
-      userSession = session;
-    } catch {
-      // If the session is invalid, delete the session cookie
-      event.cookies.delete(SESSION_COOKIE_NAME, { path: '/' });
-    }
-  }
-
-  // Add the user session to the event locals
-  event.locals.session = userSession;
-
-  // Resolve the request and get the response promise
   const response = await resolve(event);
 
-  // Return the response promise
-  return response;
+  if (event.url.pathname === "/callback") {
+    return response;
+  }
+
+  const client = createAuthClient();
+
+  try {
+    const accessToken = event.cookies.get("access_token");
+
+    if (accessToken) {
+      const refreshToken = event.cookies.get("refresh_token");
+
+      const verified = await client.verify(subjects, accessToken, {
+        refresh: refreshToken,
+      });
+
+      if (!verified.err) {
+        if (verified.tokens)
+          setTokens(event, verified.tokens.access, verified.tokens.refresh);
+        event.locals.session = verified.subject.properties;
+        return response;
+      }
+    }
+  } catch (e) {
+    console.error("Authentication error:", e);
+  }
+
+  const { url } = await client.authorize(event.url.origin + "/callback", "code");
+
+  return redirect(302, url);
 };

@@ -3,28 +3,7 @@
 /* eslint-disable */
 /* deno-fmt-ignore-file */
 
-declare module "sst" {
-  export interface Resource {
-    "MyApi": {
-      "name": string
-      "type": "sst.aws.Function"
-      "url": string
-    }
-    "MyAuth": {
-      "type": "sst.aws.Auth"
-      "url": string
-    }
-    "MyBucket": {
-      "name": string
-      "type": "sst.aws.Bucket"
-    }
-    "MyWebsite": {
-      "type": "sst.aws.SvelteKit"
-      "url": string
-    }
-  }
-}
-/// <reference path="sst-env.d.ts" />
+/// <reference path="../sst-env.d.ts" />
 
 import "sst"
 export {}

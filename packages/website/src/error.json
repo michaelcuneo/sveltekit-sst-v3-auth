@@ -1,0 +1,13 @@
+{
+  "level": "error",
+  "method": "GET",
+  "path": "/authorize",
+  "status": 500,
+  "timeInMs": 0,
+  "error": "Error: Not found: /authorize",
+  "errorId": "d10f4b89-905b-440f-9cdd-c711adeee626",
+  "client_id": "sveltekit-sst-v3-auth",
+  "redirect_uri": "http: //localhost:3000/callback",
+  "response_type": "code",
+  "state": "f04b1917-4752-453b-94d6-3bbb1c8d0f60"
+}
